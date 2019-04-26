@@ -8,9 +8,21 @@ export interface IFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   prefix?: string;
 }
 
+function preventDefault(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+}
+
 export const Form = React.forwardRef<HTMLFormElement, IFormProps>(
   (
-    { children, className, prefix = 'zent', form, type = 'vertical', ...props },
+    {
+      children,
+      className,
+      prefix = 'zent',
+      form,
+      type = 'vertical',
+      onSubmit = preventDefault,
+      ...props
+    },
     ref
   ) => {
     return (
@@ -26,6 +38,7 @@ export const Form = React.forwardRef<HTMLFormElement, IFormProps>(
             },
             className
           )}
+          onSubmit={onSubmit}
         >
           {children}
         </form>
