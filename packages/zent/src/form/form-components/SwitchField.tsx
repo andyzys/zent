@@ -6,7 +6,6 @@ import {
   IFormFieldCommonProps,
   useField,
   noopMapEventToValue,
-  IFormFieldSharedProps,
 } from '../shared';
 import { formFirstError } from '../Error';
 import { FormDescription } from '../Description';
@@ -20,7 +19,7 @@ export const FormSwitchField: React.FunctionComponent<
   IFormSwitchFieldProps & IFormFieldCommonProps<boolean>
 > = props => {
   const [{ value, ...childProps }, { error }] = useField(
-    props as IFormFieldSharedProps<boolean>,
+    props,
     false,
     noopMapEventToValue
   );

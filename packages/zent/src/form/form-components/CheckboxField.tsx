@@ -3,11 +3,7 @@ import { Omit } from 'utility-types';
 import Checkbox, { ICheckboxProps, ICheckboxEvent } from '../../checkbox';
 import { FormControl, IFormControlProps } from '../Control';
 import { formFirstError } from '../Error';
-import {
-  useField,
-  IFormFieldCommonProps,
-  IFormFieldSharedProps,
-} from '../shared';
+import { useField, IFormFieldCommonProps } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
@@ -25,11 +21,7 @@ export const FormCheckboxField = (
   const [{ value, ...passedProps }, { error }] = useField<
     boolean,
     ICheckboxEvent
-  >(
-    props as IFormFieldSharedProps<boolean, ICheckboxEvent>,
-    false,
-    mapCheckboxEventToValue
-  );
+  >(props, false, mapCheckboxEventToValue);
   const {
     className,
     style,

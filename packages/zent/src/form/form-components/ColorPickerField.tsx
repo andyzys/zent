@@ -7,7 +7,6 @@ import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
-  IFormFieldSharedProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
@@ -20,7 +19,7 @@ export const FormColorPickerField: React.FunctionComponent<
   IFormColorPickerFieldProps & IFormFieldCommonProps<string>
 > = props => {
   const [{ value, ...passedProps }, { error }] = useField<string>(
-    props as IFormFieldSharedProps<string>,
+    props,
     '',
     noopMapEventToValue
   );

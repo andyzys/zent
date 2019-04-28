@@ -3,7 +3,7 @@ import {
   FieldModel,
   useField as superUseField,
   IValidator,
-  IErrors,
+  IMaybeErrors,
 } from 'formulr';
 import { useRef, useMemo, ReactNode } from 'react';
 
@@ -12,7 +12,7 @@ export function noopMapEventToValue<T>(e: T) {
 }
 
 export interface IRenderError<T> {
-  (errors: IErrors<T>): ReactNode;
+  (errors: IMaybeErrors<T>): ReactNode;
 }
 
 export interface IFormFieldViewDrivenProps<T> {
@@ -54,7 +54,7 @@ export interface IFormFieldSharedProps<Value, Event = Value> {
   onBlur: React.FocusEventHandler;
   onCompositionStart: React.CompositionEventHandler;
   onCompositionEnd: React.CompositionEventHandler;
-  defaultValue: Value;
+  defaultValue: Value | (() => Value);
   name: string;
   model: FieldModel<Value>;
 }

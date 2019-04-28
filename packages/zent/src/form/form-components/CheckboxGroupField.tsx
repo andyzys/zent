@@ -7,7 +7,6 @@ import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
-  IFormFieldSharedProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
@@ -21,8 +20,8 @@ export interface IFormCheckboxGroupFieldProps<T>
 export function FormCheckboxGroupField<T>(
   props: IFormCheckboxGroupFieldProps<T> & IFormFieldCommonProps<T[]>
 ) {
-  const [childProps, { error }] = useField<unknown[], unknown[]>(
-    props as IFormFieldSharedProps<unknown[]>,
+  const [childProps, { error }] = useField<T[], T[]>(
+    props,
     [],
     noopMapEventToValue
   );

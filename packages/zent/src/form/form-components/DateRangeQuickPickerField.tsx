@@ -9,7 +9,6 @@ import {
   IFormFieldCommonProps,
   noopMapEventToValue,
   useField,
-  IFormFieldSharedProps,
 } from '../shared';
 import { formFirstError } from '../Error';
 import { FormDescription } from '../Description';
@@ -28,7 +27,7 @@ export const FormDateRangeQuickPickerField: React.FunctionComponent<
     IFormFieldCommonProps<DatePickers.RangeValue>
 > = props => {
   const [childProps, { error }] = useField<DatePickers.RangeValue>(
-    props as Partial<IFormFieldSharedProps<DatePickers.RangeValue>>,
+    props,
     dateDefaultValueFactory,
     noopMapEventToValue
   );
