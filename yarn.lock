@@ -1092,9 +1092,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^16.8.0", "@types/react@^16.8.7":
-  version "16.8.13"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.13.tgz#a82b15aad9ab91c40edca0d6889b7745ae24f053"
-  integrity sha512-otJ4ntMuHGrvm67CdDJMAls4WqotmAmW0g3HmWi9LCjSWXrxoXY/nHXrtmMfvPEEmGFNm6NdgMsJmnfH820Qaw==
+  version "16.8.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.14.tgz#b561bfabeb8f60d12e6d4766367e7a9ae927aa18"
+  integrity sha512-26tFVJ1omGmzIdFTFmnC5zhz1GTaqCjxgUxV4KzWvsybF42P7/j4RBn6UeO3KbHPXqKWZszMXMoI65xIWm954A==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -4971,10 +4971,10 @@ format@^0.2.2:
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
   integrity sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=
 
-formulr@0.2.0-beta.5:
-  version "0.2.0-beta.5"
-  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.5.tgz#b1107559c208c81ff0e8d06af06a76c92799eed0"
-  integrity sha512-M04S1N3tQOGG8eMogi4SEc3YU9cTBLh9pxXxJTM6SQP+a7Ap4gzuhIEo3z2LbUMQAFiCc2bc6u0bjaEPn62AIQ==
+formulr@0.2.0-beta.6:
+  version "0.2.0-beta.6"
+  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.6.tgz#8e5023923f5450a8a70ed61b6796bf6a86b5aaa6"
+  integrity sha512-xpzsZMOGWMyme2Tq/q6665WxKmSXM+yKye4wgJa2BjpdfiNG6gZrIgh9lpZ6Yphw/ELYx1ilKy75Ibc73eYskg==
   dependencies:
     "@types/react" "^16.8.0"
     "@types/react-dom" "^16.8.0"
