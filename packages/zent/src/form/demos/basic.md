@@ -21,10 +21,10 @@ en-US:
 ---
 
 ```jsx
-import { useForm, FormInputField, Form, FormStrategy, Pop, Icon } from 'zent';
+import { FormInputField, Form, FormStrategy, Pop, Icon } from 'zent';
 
 function Component() {
-	const form = useForm(FormStrategy.View);
+	const form = Form.useForm(FormStrategy.View);
 	return (
 		<Form form={form}>
 			<FormInputField

@@ -4971,13 +4971,15 @@ format@^0.2.2:
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
   integrity sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=
 
-formulr@0.2.0-beta.9:
-  version "0.2.0-beta.9"
-  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.9.tgz#b7caf2d1ec7d6f647e6868a478566f8d1e4e6ccd"
-  integrity sha512-Pu75uKm4MqXZHHIcbtLqv7UBOzZ+CQU0f0L1McdLaOaZ70cJ2gVAYAS0DT4AGNHXfNTpEKifYrt8J0Vajl/c4Q==
+formulr@0.2.0-beta.10:
+  version "0.2.0-beta.10"
+  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.10.tgz#cae6a9511354a8a026952990af0fb1b3079ed58e"
+  integrity sha512-dgsPs8UDwY/03LUHGbVmebZ4pnCF+fKgvGJ83j4tthXi2htvWQLYzX1huSJkeIOjSTMiO4ynI9rm04uOPXzmoQ==
   dependencies:
+    "@types/big.js" "^4.0.5"
     "@types/react" "^16.8.0"
     "@types/react-dom" "^16.8.0"
+    big.js "^5.2.2"
     react "^16.8.0"
     react-dom "^16.8.0"
     rxjs "^6.4.0"

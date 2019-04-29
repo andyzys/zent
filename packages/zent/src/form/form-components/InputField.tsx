@@ -35,6 +35,7 @@ export const FormInputField: React.FunctionComponent<
     required,
     description,
     notice,
+    defaultValue,
     ...otherProps
   } = props;
   return (

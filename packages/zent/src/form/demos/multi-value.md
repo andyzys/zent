@@ -29,12 +29,14 @@ import { useCallback } from 'react';
 import {
 	Form,
 	Select,
-	Input,
+	NumberInput,
 	Notify,
-	useField,
 	FormStrategy,
 	FormControl,
 	Button,
+	FieldSet,
+	Validators,
+	formFirstError,
 } from 'zent';
 // import cx from 'classnames';
 // import { Form, Select, Input, Notify } from 'zent';
@@ -68,14 +70,10 @@ const filterHandler = (item, keyword) => {
 };
 
 const ContactPhone = () => {
-	const [selectProps] = useField('areacode', '');
-	const [inputProps] = useField('mobile', '');
-	const onPhoneChange = useCallback(
-		e => {
-			inputProps.onChange(e.target.value);
-		},
-		[inputProps]
-	);
+	const [selectProps, selectModel] = Form.useField('areacode', 0);
+	const [inputProps, inputModel] = Form.useField('mobile', '', [
+		Validators.pattern(/^\d{1,10}$/, '{i18n.contactError}')
+	]);
 	return (
 		<FormControl label="{i18n.contact}:">
 			<Select
@@ -87,13 +85,14 @@ const ContactPhone = () => {
 				trigger={SelectTrigger}
 				{...selectProps}
 			/>
-			<Input
+			{formFirstError(selectModel.error)}
+			<NumberInput
 				{...inputProps}
 				className="phone-num"
 				placeholder="{i18n.phonePlaceholder}"
 				width={160}
-				onChange={onPhoneChange}
 			/>
+			{formFirstError(inputModel.error)}
 		</FormControl>
 	);
 };
@@ -109,7 +108,9 @@ const App = () => {
 	}, [form]);
 	return (
 		<Form form={form} type="horizontal">
-			<ContactPhone />
+			<FieldSet name="contactPhone">
+				<ContactPhone />
+			</FieldSet>
 			<div className="zent-form__form-actions">
 				<Button type="primary" onClick={getFormValues}>
 					{i18n.getFormValue}

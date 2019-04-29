@@ -29,6 +29,7 @@ export const FormNumberInputField: React.FunctionComponent<
     required,
     description,
     notice,
+    defaultValue,
     ...otherProps
   } = props;
   return (
