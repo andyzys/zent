@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { IMaybeErrors, IValidateResult } from 'formulr';
+import { IMaybeErrors } from 'formulr';
 import cx from 'classnames';
 
-export interface IFormErrorProps<T> {
+export interface IFormErrorProps {
   prefix?: string;
   className?: string;
   style?: React.CSSProperties;
-  error: IValidateResult<T>;
+  children?: React.ReactNode;
 }
 
 export function formFirstError<T>(errors: IMaybeErrors<T>) {
@@ -14,20 +14,19 @@ export function formFirstError<T>(errors: IMaybeErrors<T>) {
     return null;
   }
   const name: string = Object.keys(errors)[0];
-  return <FormError error={errors[name]} />;
+  return errors[name].message;
 }
 
-export const FormError = React.forwardRef<
-  HTMLDivElement,
-  IFormErrorProps<unknown>
->(({ error, className, style, prefix = 'zent' }, ref) => (
-  <div
-    ref={ref}
-    className={cx(`${prefix}-form-error`, className)}
-    style={style}
-  >
-    {error.message}
-  </div>
-));
+export const FormError = React.forwardRef<HTMLDivElement, IFormErrorProps>(
+  ({ className, style, prefix = 'zent', children }, ref) => (
+    <div
+      ref={ref}
+      className={cx(`${prefix}-form-error`, className)}
+      style={style}
+    >
+      {children}
+    </div>
+  )
+);
 
 FormError.displayName = 'ZentFormError';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 import { ICheckboxGroupProps, CheckboxGroup } from '../../checkbox';
 import { IFormControlProps, FormControl } from '../Control';
-import { formFirstError } from '../Error';
+import { formFirstError, FormError } from '../Error';
 import {
   useField,
   IFormFieldCommonProps,
@@ -52,7 +52,7 @@ export function FormCheckboxGroupField<T>(
       {!!description && (
         <FormDescription prefix={prefix}>{description}</FormDescription>
       )}
-      {renderError(error)}
+      {!!error && <FormError prefix={prefix}>{renderError(error)}</FormError>}
     </FormControl>
   );
 }
