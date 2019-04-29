@@ -5,7 +5,8 @@ import {
   IValidator,
   IMaybeErrors,
 } from 'formulr';
-import { useRef, useMemo, ReactNode } from 'react';
+import { useRef, useMemo, ReactNode, RefObject } from 'react';
+import { useScrollAnchor } from './scroll';
 
 export function noopMapEventToValue<T>(e: T) {
   return e;
@@ -34,6 +35,7 @@ export interface IFormComponentCommonPropsBase<T> {
   renderError?: IRenderError<T>;
   description?: ReactNode;
   notice?: ReactNode;
+  scrollerRef?: RefObject<HTMLElement>;
 }
 
 export type IFormFieldCommonProps<T> = IFormFieldModelProps<T> &
@@ -57,11 +59,13 @@ export interface IFormFieldSharedProps<Value, Event = Value> {
   defaultValue: Value | (() => Value);
   name: string;
   model: FieldModel<Value>;
+  scrollerRef?: RefObject<HTMLElement>;
 }
 
 export type IZentUseField<Value, Event> = [
   IZentFormChildProps<Value, Event>,
-  FieldModel<Value>
+  FieldModel<Value>,
+  RefObject<Element | undefined>
 ];
 
 function mapDefaultValue<Value, Event>(
@@ -92,6 +96,8 @@ export function useField<Value, Event = Value>(
   const [childProps, model] = field;
   const propsRef = useRef(props);
   propsRef.current = props;
+  const anchorRef = useRef<Element>();
+  useScrollAnchor(model, anchorRef, props.scrollerRef);
   const proxy = useMemo<IZentFormChildProps<Value, Event>>(
     () => ({
       value: childProps.value,
@@ -125,7 +131,7 @@ export function useField<Value, Event = Value>(
     [childProps]
   );
   proxy.value = childProps.value;
-  return [proxy, model];
+  return [proxy, model, anchorRef];
 }
 
 export function dateDefaultValueFactory() {

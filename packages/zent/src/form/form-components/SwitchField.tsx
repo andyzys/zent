@@ -18,7 +18,7 @@ export interface IFormSwitchFieldProps
 export const FormSwitchField: React.FunctionComponent<
   IFormSwitchFieldProps & IFormFieldCommonProps<boolean>
 > = props => {
-  const [{ value, ...childProps }, { error }] = useField(
+  const [{ value, ...childProps }, { error }, ref] = useField(
     props,
     false,
     noopMapEventToValue
@@ -36,6 +36,7 @@ export const FormSwitchField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

@@ -18,7 +18,7 @@ export interface IFormWeekPickerFieldProps
 export const FormWeekPickerField: React.FunctionComponent<
   IFormWeekPickerFieldProps & IFormFieldCommonProps<[Date?, Date?]>
 > = props => {
-  const [childProps, { error }] = useField(props, [], noopMapEventToValue);
+  const [childProps, { error }, ref] = useField(props, [], noopMapEventToValue);
   const {
     className,
     style,
@@ -32,6 +32,7 @@ export const FormWeekPickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

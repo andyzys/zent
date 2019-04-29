@@ -25,7 +25,7 @@ function dateDefaultValueFactory(): DatePickers.RangeValue {
 export const FormDateRangePickerField: React.FunctionComponent<
   IFormDateRangePickerFieldProps & IFormFieldCommonProps<DatePickers.RangeValue>
 > = props => {
-  const [childProps, { error }] = useField<DatePickers.RangeValue>(
+  const [childProps, { error }, ref] = useField<DatePickers.RangeValue>(
     props,
     dateDefaultValueFactory,
     noopMapEventToValue
@@ -43,6 +43,7 @@ export const FormDateRangePickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

@@ -55,10 +55,6 @@ Note: The name of the `format` prop in date related picker components is changed
 <!-- demo-slot-1 -->
 <!-- demo-slot-2 -->
 
-#### Package custom field using `getControlGroup`
-
-<!-- demo-slot-3 -->
-
 #### Package multiple elements
 
 When a `Field` needs to contains multiple elements, it is recommended to assemble the values of multiple elements into one object and passed it to the `Field` component. When using `getControlGroup` is not possible to satisfy your package requirements, you can wrap the component yourself and change the value of the field by calling the `onChange` function passed in by the `Field` component.
@@ -100,20 +96,6 @@ Asynchronous validations is usually triggered on blur. If you need to manually t
 If you submit a form without operating the fields that have asynchronous validations, these asynchronous validations will not be triggered by default. Using the built-in `handleSubmit` method for submitting will help to trigger the asynchronous verifications which have never been triggered. If you don't want to use `handleSubmit` method, you should use the `zentForm.isFormAsyncValidated` method to judge wheather the form has been asynchronous validated. Depending on the result, you should choose whether to use the `zentForm.asyncValidateForm (resolve, reject)` method to force the asynchronous validations of the form.
 
 <!-- demo-slot-7 -->
-
-### The format of `value`
-
-The `Form` component provides` format` and `nomalize` methods for formatting` value`. The timing of their implementation is detailed in [The life-circle of value in Field](#the-life-circle-of-value-in-fi)。
-
-<!-- demo-slot-8 -->
-
-### The operations of form
-
-- `Form.createForm` helps injecting the `zentForm` property into a component, which providing various methods for manipulating form and field, such as getting the values of form, resetting the values and so on. See more details in [zenForm API](#zentform);
-- The submission process of form, which is the function `handleSubmit`, is also encapsulated in `Form` component. You can encapsulate the asynchronous commit process in a function and **return a Promise object **. Then `Form` components will call the `onSubmitSuccess` method and the `onSubmitFail` methods according to the results of the Promise object and maintains the updates of the `isSubmitting` property (`isSubmitting` is available via `zentForm.isSubmitting ()`). Otherwise, the form will scroll to the first error field automatically when submitting by setting the property `srcollToError`.
-
-<!-- demo-slot-9 -->
-<!-- demo-slot-10 -->
 
 ### Others
 

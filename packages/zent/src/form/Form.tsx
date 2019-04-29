@@ -1,18 +1,120 @@
 import * as React from 'react';
 import cx from 'classnames';
-import { IForm, FormProvider } from 'formulr';
+import {
+  IForm,
+  FormProvider,
+  ValidateStrategy,
+  useForm as superUseForm,
+  FormStrategy,
+  FormModel,
+  useField,
+  useFieldArray,
+  useFieldSet,
+} from 'formulr';
+import { IZentFormContext, FormContext } from './context';
 
-export interface IFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+export interface IFormProps<T extends object = any>
+  extends React.FormHTMLAttributes<HTMLFormElement> {
   type: 'horizontal' | 'vertical';
-  form: IForm;
+  form: ZentForm<T>;
   prefix?: string;
+  scrollerRef?: React.RefObject<HTMLElement>;
 }
 
 function preventDefault(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
 }
 
-export const Form = React.forwardRef<HTMLFormElement, IFormProps>(
+export class ZentForm<T extends object> implements IForm {
+  constructor(
+    readonly inner: IForm,
+    readonly zentFormContext: IZentFormContext
+  ) {}
+
+  get ctx() {
+    return this.inner.ctx;
+  }
+
+  get model() {
+    return this.inner.model;
+  }
+
+  validate(strategy: ValidateStrategy = ValidateStrategy.IgnoreAsync) {
+    this.inner.model.validate(strategy);
+  }
+
+  isValid() {
+    return this.inner.model.isValid();
+  }
+
+  isValidating() {
+    return this.inner.model.isValidating$.getValue();
+  }
+
+  getValue() {
+    return this.inner.model.getRawValue();
+  }
+
+  initialize(value: T) {
+    this.inner.model.initialize(value);
+  }
+
+  patchValue(value: T) {
+    this.inner.model.patchValue(value);
+  }
+
+  resetValue() {
+    this.inner.model.resetValue();
+  }
+
+  prepareSubmit(scrollToError = true): boolean {
+    if (this.isValidating()) {
+      return false;
+    }
+    this.validate(
+      ValidateStrategy.IgnoreAsync | ValidateStrategy.IgnoreTouched
+    );
+    const isValid = this.isValid();
+    if (isValid) {
+      return true;
+    }
+    if (scrollToError) {
+      const { children } = this.zentFormContext;
+      for (let i = 0; i < children.length; i += 1) {
+        const child = children[i];
+        if (!child.isValid()) {
+          child.scrollTo();
+        }
+      }
+    }
+    return false;
+  }
+}
+
+export function useForm<T extends object = any>(
+  arg: FormStrategy.View | FormModel<T>
+) {
+  const inner = superUseForm(arg);
+  const zentFormContext = React.useMemo<IZentFormContext>(
+    () => ({
+      children: [],
+    }),
+    [inner]
+  );
+  return React.useMemo(() => new ZentForm(inner, zentFormContext), [inner]);
+}
+
+export interface IFormApi {
+  useForm: typeof useForm;
+  useField: typeof useField;
+  useFieldArray: typeof useFieldArray;
+  useFieldSet: typeof useFieldSet;
+}
+
+export const Form: React.ForwardRefExoticComponent<
+  IFormProps & React.RefAttributes<HTMLFormElement>
+> &
+  IFormApi = React.forwardRef<HTMLFormElement, IFormProps>(
   (
     {
       children,
@@ -21,30 +123,38 @@ export const Form = React.forwardRef<HTMLFormElement, IFormProps>(
       form,
       type = 'vertical',
       onSubmit = preventDefault,
+      scrollerRef,
       ...props
     },
     ref
   ) => {
+    form.zentFormContext.scrollerRef = scrollerRef;
     return (
-      <FormProvider value={form.ctx}>
-        <form
-          ref={ref}
-          {...props}
-          className={cx(
-            `${prefix}-form`,
-            {
-              [`${prefix}-form-vertical`]: type === 'vertical',
-              [`${prefix}-form-horizontal`]: type === 'horizontal',
-            },
-            className
-          )}
-          onSubmit={onSubmit}
-        >
-          {children}
-        </form>
-      </FormProvider>
+      <FormContext.Provider value={form.zentFormContext}>
+        <FormProvider value={form.ctx}>
+          <form
+            ref={ref}
+            {...props}
+            className={cx(
+              `${prefix}-form`,
+              {
+                [`${prefix}-form-vertical`]: type === 'vertical',
+                [`${prefix}-form-horizontal`]: type === 'horizontal',
+              },
+              className
+            )}
+            onSubmit={onSubmit}
+          >
+            {children}
+          </form>
+        </FormProvider>
+      </FormContext.Provider>
     );
   }
-);
+) as any;
 
+Form.useForm = useForm;
+Form.useField = useField;
+Form.useFieldArray = useFieldArray;
+Form.useFieldSet = useFieldSet;
 Form.displayName = 'ZentForm';

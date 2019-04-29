@@ -21,7 +21,11 @@ function mapInputEventToValue(
 export const FormInputField: React.FunctionComponent<
   IFormInputFieldProps & IFormFieldCommonProps<string>
 > = props => {
-  const [childProps, { error }] = useField(props, '', mapInputEventToValue);
+  const [childProps, { error }, ref] = useField(
+    props,
+    '',
+    mapInputEventToValue
+  );
   const {
     className,
     style,
@@ -35,6 +39,7 @@ export const FormInputField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

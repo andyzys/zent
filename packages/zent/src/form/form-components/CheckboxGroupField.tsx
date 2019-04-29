@@ -20,7 +20,7 @@ export interface IFormCheckboxGroupFieldProps<T>
 export function FormCheckboxGroupField<T>(
   props: IFormCheckboxGroupFieldProps<T> & IFormFieldCommonProps<T[]>
 ) {
-  const [childProps, { error }] = useField<T[], T[]>(
+  const [childProps, { error }, ref] = useField<T[], T[]>(
     props,
     [],
     noopMapEventToValue
@@ -39,6 +39,7 @@ export function FormCheckboxGroupField<T>(
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

@@ -18,7 +18,7 @@ export interface IFormColorPickerFieldProps
 export const FormColorPickerField: React.FunctionComponent<
   IFormColorPickerFieldProps & IFormFieldCommonProps<string>
 > = props => {
-  const [{ value, ...passedProps }, { error }] = useField<string>(
+  const [{ value, ...passedProps }, { error }, ref] = useField<string>(
     props,
     '',
     noopMapEventToValue
@@ -36,6 +36,7 @@ export const FormColorPickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

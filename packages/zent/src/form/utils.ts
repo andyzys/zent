@@ -1,7 +1,10 @@
 import isFunction from 'lodash-es/isFunction';
 import scroll from '../utils/scroll';
 
-export function scrollToNode(element: Element) {
+export function scrollToNode(
+  element: Element,
+  scroller: HTMLElement = document.body
+) {
   // Skip if element is not a DOM node or text node
   if (
     !element ||
@@ -14,5 +17,5 @@ export function scrollToNode(element: Element) {
   const elementBound = (element as Element).getBoundingClientRect();
   const y = elementBound.top + window.pageYOffset;
   const x = elementBound.left + window.pageXOffset;
-  scroll(document.body, x, y);
+  scroll(scroller, x, y);
 }

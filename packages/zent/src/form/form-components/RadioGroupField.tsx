@@ -19,7 +19,7 @@ function mapRadioEvent(e: IRadioEvent) {
 export const FormRadioGroupField: React.FunctionComponent<
   IFormRadioGroupFieldProps & IFormFieldCommonProps<unknown>
 > = props => {
-  const [childProps, { error }] = useField(props, '', mapRadioEvent);
+  const [childProps, { error }, ref] = useField(props, '', mapRadioEvent);
   const {
     className,
     style,
@@ -34,6 +34,7 @@ export const FormRadioGroupField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

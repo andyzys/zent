@@ -25,27 +25,104 @@ en-US:
 ---
 
 ```jsx
+import { useCallback } from 'react';
+import {
+	Form,
+	Select,
+	Input,
+	Notify,
+	useField,
+	FormStrategy,
+	FormControl,
+	Button,
+} from 'zent';
 // import cx from 'classnames';
 // import { Form, Select, Input, Notify } from 'zent';
 
+const { SelectTrigger } = Select;
+const countyCodeList = [
+	{
+		code: '+86',
+		zh: 'zhongguo',
+		eng: 'china',
+		value: '{i18n.countyListText1}',
+		index: 0,
+	},
+	{
+		code: '+853',
+		zh: 'aomen',
+		eng: 'Macau',
+		value: '{i18n.countyListText2}',
+		index: 1,
+	},
+];
+
+const filterHandler = (item, keyword) => {
+	return (
+		keyword &&
+		item.text
+			.trim()
+			.toLowerCase()
+			.indexOf(keyword.trim().toLowerCase()) > -1
+	);
+};
+
+const ContactPhone = () => {
+	const [selectProps] = useField('areacode', '');
+	const [inputProps] = useField('mobile', '');
+	const onPhoneChange = useCallback(
+		e => {
+			inputProps.onChange(e.target.value);
+		},
+		[inputProps]
+	);
+	return (
+		<FormControl label="{i18n.contact}:">
+			<Select
+				className="areacode"
+				data={countyCodeList}
+				filter={filterHandler}
+				optionValue="index"
+				optionText="value"
+				trigger={SelectTrigger}
+				{...selectProps}
+			/>
+			<Input
+				{...inputProps}
+				className="phone-num"
+				placeholder="{i18n.phonePlaceholder}"
+				width={160}
+				onChange={onPhoneChange}
+			/>
+		</FormControl>
+	);
+};
+
+const App = () => {
+	const form = useForm(FormStrategy.View);
+	const getFormValues = useCallback(() => {
+		const values = form.model.getRawValues();
+		console.log(values);
+	}, [form]);
+	const resetForm = useCallback(() => {
+		console.log('resetForm');
+	}, [form]);
+	return (
+		<Form form={form} type="horizontal">
+			<ContactPhone />
+			<div className="zent-form__form-actions">
+				<Button type="primary" onClick={getFormValues}>
+					{i18n.getFormValue}
+				</Button>{' '}
+				<Button type="primary" outline onClick={resetForm}>
+					{i18n.reset}
+				</Button>
+			</div>
+		</Form>
+	);
+};
+
 // const { Field, createForm } = Form;
-// const { SelectTrigger } = Select;
-// const countyCodeList = [
-// 	{
-// 		code: '+86',
-// 		zh: 'zhongguo',
-// 		eng: 'china',
-// 		value: '{i18n.countyListText1}',
-// 		index: 0,
-// 	},
-// 	{
-// 		code: '+853',
-// 		zh: 'aomen',
-// 		eng: 'Macau',
-// 		value: '{i18n.countyListText2}',
-// 		index: 1,
-// 	},
-// ];
 
 // class ContactPhone extends React.Component {
 // 	onSelectChange = (e, selectedItem) => {
@@ -164,5 +241,5 @@ en-US:
 
 // const WrappedForm = createForm()(CustomFieldForm);
 
-ReactDOM.render(<div />, mountNode);
+ReactDOM.render(<App />, mountNode);
 ```

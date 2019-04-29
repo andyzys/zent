@@ -22,7 +22,7 @@ export interface IFormMonthPickerFieldProps
 export const FormMonthPickerField: React.FunctionComponent<
   IFormMonthPickerFieldProps & IFormFieldCommonProps<DatePickers.Value>
 > = props => {
-  const [childProps, { error }] = useField(
+  const [childProps, { error }, ref] = useField(
     props,
     dateDefaultValueFactory,
     noopMapEventToValue
@@ -40,6 +40,7 @@ export const FormMonthPickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

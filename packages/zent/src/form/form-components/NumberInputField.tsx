@@ -19,7 +19,7 @@ export interface IFormNumberInputFieldProps
 export const FormNumberInputField: React.FunctionComponent<
   IFormNumberInputFieldProps & IFormFieldCommonProps<string>
 > = props => {
-  const [childProps, { error }] = useField(props, '', noopMapEventToValue);
+  const [childProps, { error }, ref] = useField(props, '', noopMapEventToValue);
   const {
     className,
     style,
@@ -33,6 +33,7 @@ export const FormNumberInputField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

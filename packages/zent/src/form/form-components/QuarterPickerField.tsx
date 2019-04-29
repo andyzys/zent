@@ -21,7 +21,7 @@ export interface IFormQuarterPickerFieldProps
 export const FormQuarterPickerField: React.FunctionComponent<
   IFormQuarterPickerFieldProps & IFormFieldCommonProps<QuarterPickerValue>
 > = props => {
-  const [childProps, { error }] = useField(props, [], noopMapEventToValue);
+  const [childProps, { error }, ref] = useField(props, [], noopMapEventToValue);
   const {
     className,
     style,
@@ -35,6 +35,7 @@ export const FormQuarterPickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

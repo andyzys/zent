@@ -18,7 +18,7 @@ function mapCheckboxEventToValue(e: ICheckboxEvent) {
 export const FormCheckboxField = (
   props: IFormCheckboxFieldProps & IFormFieldCommonProps<boolean>
 ) => {
-  const [{ value, ...passedProps }, { error }] = useField<
+  const [{ value, ...passedProps }, { error }, ref] = useField<
     boolean,
     ICheckboxEvent
   >(props, false, mapCheckboxEventToValue);
@@ -35,6 +35,7 @@ export const FormCheckboxField = (
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}

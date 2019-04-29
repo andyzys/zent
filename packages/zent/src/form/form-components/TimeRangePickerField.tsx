@@ -26,7 +26,7 @@ export const FormTimeRangePickerField: React.FunctionComponent<
   IFormTimeRangePickerFieldProps &
     IFormFieldCommonProps<[DatePickers.Value, DatePickers.Value]>
 > = props => {
-  const [childProps, { error }] = useField(
+  const [childProps, { error }, ref] = useField(
     props,
     dateDefaultValueFactory,
     noopMapEventToValue
@@ -44,6 +44,7 @@ export const FormTimeRangePickerField: React.FunctionComponent<
   } = props;
   return (
     <FormControl
+      ref={ref as any}
       className={className}
       style={style}
       label={label}
