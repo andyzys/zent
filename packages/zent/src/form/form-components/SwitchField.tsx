@@ -3,11 +3,11 @@ import { Omit } from 'utility-types';
 import Switch, { ISwitchProps } from '../../switch';
 import { IFormControlProps, FormControl } from '../Control';
 import {
-  IFormFieldCommonProps,
   useField,
+  IFormFieldCommonProps,
   noopMapEventToValue,
+  defaultRenderError,
 } from '../shared';
-import { formFirstError } from '../Error';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
@@ -28,7 +28,7 @@ export const FormSwitchField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -42,6 +42,7 @@ export const FormSwitchField: React.FunctionComponent<
       label={label}
       prefix={prefix}
       required={required}
+      invalid={!!error}
     >
       <Switch prefix={prefix} {...otherProps} {...childProps} checked={value} />
       {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}

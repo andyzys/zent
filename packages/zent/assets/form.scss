@@ -1,6 +1,12 @@
 @import './theme/default';
 @import './theme/font';
 
+.has-error {
+  .zent-form-label {
+    color: $theme-error-4;
+  }
+}
+
 .zent-form {
   $p: &;
 
@@ -20,6 +26,10 @@
         margin-right: 6px;
       }
     }
+  }
+
+  &-error {
+    color: $theme-error-4;
   }
 
   &-notice,

@@ -10,8 +10,8 @@ import {
   useField,
   noopMapEventToValue,
   dateDefaultValueFactory,
+  defaultRenderError,
 } from '../shared';
-import { formFirstError } from '../Error';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
@@ -32,7 +32,7 @@ export const FormMonthPickerField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -45,6 +45,7 @@ export const FormMonthPickerField: React.FunctionComponent<
       style={style}
       label={label}
       prefix={prefix}
+      invalid={!!error}
     >
       <MonthPicker prefix={prefix} {...otherProps} {...childProps} />
       {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}

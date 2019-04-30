@@ -3,11 +3,11 @@ import { Omit } from 'utility-types';
 import { IFormControlProps, FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
-  IFormFieldCommonProps,
   useField,
+  IFormFieldCommonProps,
   noopMapEventToValue,
+  defaultRenderError,
 } from '../shared';
-import { formFirstError } from '../Error';
 import DateRangePicker, {
   IDateRangePickerProps,
 } from '../../datetimepicker/DateRangePicker';
@@ -35,7 +35,7 @@ export const FormDateRangePickerField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -48,6 +48,7 @@ export const FormDateRangePickerField: React.FunctionComponent<
       style={style}
       label={label}
       prefix={prefix}
+      invalid={!!error}
     >
       <DateRangePicker prefix={prefix} {...otherProps} {...childProps} />
       {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}

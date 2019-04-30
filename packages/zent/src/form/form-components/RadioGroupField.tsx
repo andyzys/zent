@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 
 import { IRadioGroupProps, RadioGroup, IRadioEvent } from '../../radio';
-import { IFormFieldCommonProps, useField } from '../shared';
+import { IFormFieldCommonProps, useField, defaultRenderError } from '../shared';
 import { FormControl, IFormControlProps } from '../Control';
-import { formFirstError } from '../Error';
 import { FormNotice } from '../Notice';
 import { FormDescription } from '../Description';
 
@@ -25,7 +24,7 @@ export const FormRadioGroupField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     children,
     required,
     description,
@@ -40,6 +39,7 @@ export const FormRadioGroupField: React.FunctionComponent<
       label={label}
       prefix={prefix}
       required={required}
+      invalid={!!error}
     >
       <RadioGroup prefix={prefix} {...otherProps} {...childProps}>
         {children}

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 import { IFormControlProps, FormControl } from '../Control';
 import {
-  IFormFieldCommonProps,
   useField,
+  IFormFieldCommonProps,
   noopMapEventToValue,
+  defaultRenderError,
 } from '../shared';
-import { formFirstError } from '../Error';
 import WeekPicker, { IWeekPickerProps } from '../../datetimepicker/WeekPicker';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
@@ -24,7 +24,7 @@ export const FormWeekPickerField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -37,6 +37,7 @@ export const FormWeekPickerField: React.FunctionComponent<
       style={style}
       label={label}
       prefix={prefix}
+      invalid={!!error}
     >
       <WeekPicker prefix={prefix} {...otherProps} {...childProps} />
       {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}

@@ -36,7 +36,7 @@ import {
 	Button,
 	FieldSet,
 	Validators,
-	formFirstError,
+	FormError,
 } from 'zent';
 // import cx from 'classnames';
 // import { Form, Select, Input, Notify } from 'zent';
@@ -72,10 +72,20 @@ const filterHandler = (item, keyword) => {
 const ContactPhone = () => {
 	const [selectProps, selectModel] = Form.useField('areacode', 0);
 	const [inputProps, inputModel] = Form.useField('mobile', '', [
-		Validators.pattern(/^\d{1,10}$/, '{i18n.contactError}')
+		Validators.pattern(/^\d{1,10}$/, '{i18n.contactError}'),
 	]);
+	const onSelectChange = useCallback(
+		e => {
+			selectProps.onChange(e.target.value);
+		},
+		[selectProps.onChange]
+	);
 	return (
-		<FormControl label="{i18n.contact}:">
+		<FormControl
+			className="form-demo-multiple-value"
+			label="{i18n.contact}:"
+			invalid={!!selectModel.error || !!inputModel.error}
+		>
 			<Select
 				className="areacode"
 				data={countyCodeList}
@@ -83,16 +93,22 @@ const ContactPhone = () => {
 				optionValue="index"
 				optionText="value"
 				trigger={SelectTrigger}
+				width={160}
 				{...selectProps}
+				onChange={onSelectChange}
 			/>
-			{formFirstError(selectModel.error)}
+			{selectModel.error ? (
+				<FormError>{selectModel.error.message}</FormError>
+			) : null}
 			<NumberInput
 				{...inputProps}
 				className="phone-num"
 				placeholder="{i18n.phonePlaceholder}"
 				width={160}
 			/>
-			{formFirstError(inputModel.error)}
+			{inputModel.error ? (
+				<FormError>{inputModel.error.message}</FormError>
+			) : null}
 		</FormControl>
 	);
 };
@@ -100,11 +116,11 @@ const ContactPhone = () => {
 const App = () => {
 	const form = useForm(FormStrategy.View);
 	const getFormValues = useCallback(() => {
-		const values = form.model.getRawValues();
+		const values = form.getValue();
 		console.log(values);
 	}, [form]);
 	const resetForm = useCallback(() => {
-		console.log('resetForm');
+		form.resetValue();
 	}, [form]);
 	return (
 		<Form form={form} type="horizontal">
@@ -244,3 +260,11 @@ const App = () => {
 
 ReactDOM.render(<App />, mountNode);
 ```
+
+<style>
+	.form-demo-multiple-value {
+		& .zent-form-control-content {
+			display: flex;
+		}
+	}
+</style>

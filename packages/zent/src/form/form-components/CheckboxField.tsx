@@ -1,9 +1,9 @@
 import * as React from 'react';
+import cx from 'classnames';
 import { Omit } from 'utility-types';
 import Checkbox, { ICheckboxProps, ICheckboxEvent } from '../../checkbox';
 import { FormControl, IFormControlProps } from '../Control';
-import { formFirstError } from '../Error';
-import { useField, IFormFieldCommonProps } from '../shared';
+import { useField, IFormFieldCommonProps, defaultRenderError } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
@@ -27,7 +27,7 @@ export const FormCheckboxField = (
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -36,10 +36,11 @@ export const FormCheckboxField = (
   return (
     <FormControl
       ref={ref as any}
-      className={className}
+      className={cx(className)}
       style={style}
       label={label}
       prefix={prefix}
+      invalid={!!error}
     >
       <Checkbox
         prefix={prefix}

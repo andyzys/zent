@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 import ColorPicker, { IColorPickerProps } from '../../colorpicker';
 import { IFormControlProps, FormControl } from '../Control';
-import { formFirstError } from '../Error';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
+  defaultRenderError,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
@@ -28,7 +28,7 @@ export const FormColorPickerField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -42,6 +42,7 @@ export const FormColorPickerField: React.FunctionComponent<
       label={label}
       prefix={prefix}
       required={required}
+      invalid={!!error}
     >
       <ColorPicker
         prefix={prefix}

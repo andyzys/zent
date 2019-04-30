@@ -1,19 +1,21 @@
+import * as React from 'react';
 import {
   IUseField,
   FieldModel,
   useField as superUseField,
   IValidator,
-  IMaybeErrors,
+  IMaybeError,
 } from 'formulr';
 import { useRef, useMemo, ReactNode, RefObject } from 'react';
 import { useScrollAnchor } from './scroll';
+import { FormError } from './Error';
 
 export function noopMapEventToValue<T>(e: T) {
   return e;
 }
 
 export interface IRenderError<T> {
-  (errors: IMaybeErrors<T>): ReactNode;
+  (error: IMaybeError<T>): ReactNode;
 }
 
 export interface IFormFieldViewDrivenProps<T> {
@@ -136,4 +138,11 @@ export function useField<Value, Event = Value>(
 
 export function dateDefaultValueFactory() {
   return new Date();
+}
+
+export function defaultRenderError<T>(error: IMaybeError<T>) {
+  if (error === null) {
+    return null;
+  }
+  return <FormError>{error.message}</FormError>;
 }

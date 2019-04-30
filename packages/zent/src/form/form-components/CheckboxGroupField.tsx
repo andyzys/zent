@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 import { ICheckboxGroupProps, CheckboxGroup } from '../../checkbox';
 import { IFormControlProps, FormControl } from '../Control';
-import { formFirstError, FormError } from '../Error';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
+  defaultRenderError,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
@@ -30,7 +30,7 @@ export function FormCheckboxGroupField<T>(
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -44,6 +44,7 @@ export function FormCheckboxGroupField<T>(
       style={style}
       label={label}
       prefix={prefix}
+      invalid={!!error}
     >
       <CheckboxGroup prefix={prefix} {...otherProps} {...childProps}>
         {children}
@@ -52,7 +53,7 @@ export function FormCheckboxGroupField<T>(
       {!!description && (
         <FormDescription prefix={prefix}>{description}</FormDescription>
       )}
-      {!!error && <FormError prefix={prefix}>{renderError(error)}</FormError>}
+      {defaultRenderError(error)}
     </FormControl>
   );
 }

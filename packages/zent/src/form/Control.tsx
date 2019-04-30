@@ -10,24 +10,36 @@ export interface IFormControlProps<T> {
   prefix?: string;
   children?: React.ReactNode;
   required?: boolean;
+  invalid?: boolean;
 }
 
 export const FormControl = React.forwardRef<
   HTMLDivElement,
   IFormControlProps<unknown>
->(({ className, style, label, prefix = 'zent', children, required }, ref) => {
-  return (
-    <div
-      ref={ref}
-      className={cx(`${prefix}-form-control`, className)}
-      style={style}
-    >
-      <Label prefix={prefix} required={required}>
-        {label}
-      </Label>
-      <div className={cx(`${prefix}-form-control-content`)}>{children}</div>
-    </div>
-  );
-});
+>(
+  (
+    { className, style, label, prefix = 'zent', children, required, invalid },
+    ref
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={cx(
+          `${prefix}-form-control`,
+          {
+            'has-error': invalid,
+          },
+          className
+        )}
+        style={style}
+      >
+        <Label prefix={prefix} required={required}>
+          {label}
+        </Label>
+        <div className={cx(`${prefix}-form-control-content`)}>{children}</div>
+      </div>
+    );
+  }
+);
 
 FormControl.displayName = 'ZentFormControl';

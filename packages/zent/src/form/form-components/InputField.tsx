@@ -5,8 +5,7 @@ import { FormControl, IFormControlProps } from '../Control';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 import Input, { IInputProps, IInputChangeEvent } from '../../input';
-import { formFirstError } from '../Error';
-import { useField, IFormFieldCommonProps } from '../shared';
+import { useField, IFormFieldCommonProps, defaultRenderError } from '../shared';
 
 export interface IFormInputFieldProps
   extends Omit<IInputProps, 'onChange' | 'value' | 'name'>,
@@ -31,7 +30,7 @@ export const FormInputField: React.FunctionComponent<
     style,
     label,
     prefix,
-    renderError = formFirstError,
+    renderError = defaultRenderError,
     required,
     description,
     notice,
@@ -46,6 +45,7 @@ export const FormInputField: React.FunctionComponent<
       label={label}
       prefix={prefix}
       required={required}
+      invalid={!!error}
     >
       <Input prefix={prefix} {...otherProps} {...childProps} />
       {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
