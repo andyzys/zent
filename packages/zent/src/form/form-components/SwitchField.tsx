@@ -13,10 +13,7 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormSwitchFieldProps
-  extends IFormComponentCommonProps<
-    boolean,
-    Omit<ISwitchProps, 'onChange' | 'checked'>
-  > {}
+  extends IFormComponentCommonProps<boolean, Omit<ISwitchProps, 'checked'>> {}
 
 export const FormSwitchField: React.FunctionComponent<
   IFormSwitchFieldProps & IFormFieldCommonProps<boolean>

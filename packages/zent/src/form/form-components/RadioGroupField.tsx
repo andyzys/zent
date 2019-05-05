@@ -13,10 +13,7 @@ import { FormNotice } from '../Notice';
 import { FormDescription } from '../Description';
 
 export interface IFormRadioGroupFieldProps<T>
-  extends IFormComponentCommonProps<
-    T,
-    Omit<IRadioGroupProps, 'value' | 'onChange'>
-  > {
+  extends IFormComponentCommonProps<T, Omit<IRadioGroupProps, 'value'>> {
   children?: React.ReactNode;
 }
 

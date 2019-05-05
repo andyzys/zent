@@ -16,7 +16,7 @@ import { FormNotice } from '../Notice';
 export interface IFormNumberInputFieldProps
   extends IFormComponentCommonProps<
     string,
-    Omit<INumberInputProps, 'onChange' | 'value' | 'name'>
+    Omit<INumberInputProps, 'value' | 'name'>
   > {}
 
 export const FormNumberInputField: React.FunctionComponent<

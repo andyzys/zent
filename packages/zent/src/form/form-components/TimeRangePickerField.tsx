@@ -18,7 +18,7 @@ import { FormNotice } from '../Notice';
 export interface IFormTimeRangePickerFieldProps
   extends IFormComponentCommonProps<
     DatePickers.RangeValue,
-    Omit<ITimeRangePickerProps, 'onChange' | 'value'>
+    Omit<ITimeRangePickerProps, 'value'>
   > {}
 
 function dateDefaultValueFactory(): DatePickers.RangeValue {

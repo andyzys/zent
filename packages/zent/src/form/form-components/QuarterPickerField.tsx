@@ -18,7 +18,7 @@ import { FormNotice } from '../Notice';
 export interface IFormQuarterPickerFieldProps
   extends IFormComponentCommonProps<
     QuarterPickerValue,
-    Omit<IQuarterPickerProps, 'value' | 'onChange'>
+    Omit<IQuarterPickerProps, 'value'>
   > {}
 
 export const FormQuarterPickerField: React.FunctionComponent<

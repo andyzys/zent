@@ -17,7 +17,7 @@ import { FormNotice } from '../Notice';
 export interface IFormYearPickerFieldProps
   extends IFormComponentCommonProps<
     DatePickers.Value,
-    Omit<IYearPickerProps, 'value' | 'onChange'>
+    Omit<IYearPickerProps, 'value'>
   > {}
 
 export const FormYearPickerField: React.FunctionComponent<

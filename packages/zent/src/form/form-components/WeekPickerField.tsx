@@ -16,7 +16,7 @@ import { DatePickers } from '../../datetimepicker/common/types';
 export interface IFormWeekPickerFieldProps
   extends IFormComponentCommonProps<
     DatePickers.RangeValue,
-    Omit<IWeekPickerProps, 'value' | 'onChange'>
+    Omit<IWeekPickerProps, 'value'>
   > {}
 
 export const FormWeekPickerField: React.FunctionComponent<

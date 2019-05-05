@@ -15,7 +15,7 @@ import {
 export interface IFormInputFieldProps
   extends IFormComponentCommonProps<
     string,
-    Omit<IInputProps, 'onChange' | 'value' | 'name' | 'defaultValue'>
+    Omit<IInputProps, 'value' | 'name' | 'defaultValue'>
   > {}
 
 function mapInputEventToValue(

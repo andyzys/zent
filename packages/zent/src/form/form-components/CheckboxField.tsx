@@ -13,10 +13,7 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormCheckboxFieldProps
-  extends IFormComponentCommonProps<
-    boolean,
-    Omit<ICheckboxProps, 'onChange' | 'checked'>
-  > {}
+  extends IFormComponentCommonProps<boolean, Omit<ICheckboxProps, 'checked'>> {}
 
 function mapCheckboxEventToValue(e: ICheckboxEvent): boolean {
   return e.target.checked;

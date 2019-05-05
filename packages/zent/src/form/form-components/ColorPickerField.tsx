@@ -13,10 +13,7 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormColorPickerFieldProps
-  extends IFormComponentCommonProps<
-    string,
-    Omit<IColorPickerProps, 'color' | 'onChange'>
-  > {}
+  extends IFormComponentCommonProps<string, Omit<IColorPickerProps, 'color'>> {}
 
 export const FormColorPickerField: React.FunctionComponent<
   IFormColorPickerFieldProps & IFormFieldCommonProps<string>

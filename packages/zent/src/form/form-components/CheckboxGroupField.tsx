@@ -13,10 +13,7 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormCheckboxGroupFieldProps<T>
-  extends IFormComponentCommonProps<
-    T[],
-    Omit<ICheckboxGroupProps, 'value' | 'onChange'>
-  > {
+  extends IFormComponentCommonProps<T[], Omit<ICheckboxGroupProps, 'value'>> {
   children?: React.ReactNode;
 }
 
