@@ -9,6 +9,7 @@ import {
 import { useRef, useMemo, ReactNode, RefObject } from 'react';
 import { useScrollAnchor } from './scroll';
 import { FormError } from './Error';
+import { IFormControlProps } from './Control';
 
 export function noopMapEventToValue<T>(e: T) {
   return e;
@@ -21,7 +22,6 @@ export interface IRenderError<T> {
 export interface IFormFieldViewDrivenProps<T> {
   name: string;
   defaultValue?: T | (() => T);
-  required?: boolean;
   validators?: Array<IValidator<T>>;
 }
 
@@ -33,31 +33,29 @@ export type IFormFieldModelProps<T> =
   | IFormFieldViewDrivenProps<T>
   | IFormFieldModelDrivenProps<T>;
 
-export interface IFormComponentCommonPropsBase<T> {
-  renderError?: IRenderError<T>;
-  description?: ReactNode;
+export interface IFormComponentCommonProps<Value, Props>
+  extends IFormControlProps {
+  renderError?: IRenderError<Value>;
+  helpDesc?: ReactNode;
   notice?: ReactNode;
   scrollerRef?: RefObject<HTMLElement>;
+  props?: Partial<Props>;
+  defaultValue?: Value;
 }
 
-export type IFormFieldCommonProps<T> = IFormFieldModelProps<T> &
-  IFormComponentCommonPropsBase<T>;
+export type IFormFieldCommonProps<Value> = IFormFieldModelProps<Value>;
 
-export interface IZentFormChildProps<Value, Event> {
+export interface IZentFormChildProps<Value, ChangeEvent> {
   value: Value;
-  onChange(e: Event): void;
+  onChange(e: ChangeEvent): void;
   onFocus: React.FocusEventHandler;
   onBlur: React.FocusEventHandler;
   onCompositionStart: React.CompositionEventHandler;
   onCompositionEnd: React.CompositionEventHandler;
 }
 
-export interface IFormFieldSharedProps<Value, Event = Value> {
-  onChange(e: Event): void;
-  onFocus: React.FocusEventHandler;
-  onBlur: React.FocusEventHandler;
-  onCompositionStart: React.CompositionEventHandler;
-  onCompositionEnd: React.CompositionEventHandler;
+export interface IFormFieldSharedProps<Value, Props> {
+  props?: Partial<Props>;
   defaultValue: Value | (() => Value);
   name: string;
   model: FieldModel<Value>;
@@ -81,11 +79,23 @@ function mapDefaultValue<Value, Event>(
   return maybeFactory;
 }
 
-export function useField<Value, Event = Value>(
-  props: Partial<IFormFieldSharedProps<Value, Event>>,
+export interface IComponentCommonProps<ChangeEvent> {
+  onChange?: (e: ChangeEvent) => void;
+  onFocus?: React.FocusEventHandler;
+  onBlur?: React.FocusEventHandler;
+  onCompositionStart?: React.CompositionEventHandler;
+  onCompositionEnd?: React.CompositionEventHandler;
+}
+
+export function useField<
+  Value,
+  ChangeEvent,
+  Props extends IComponentCommonProps<ChangeEvent>
+>(
+  props: Partial<IFormFieldSharedProps<Value, Props>>,
   defaultDefaultValue: Value | (() => Value),
-  mapEventToValue: (e: Event) => Value
-): IZentUseField<Value, Event> {
+  mapEventToValue: (e: ChangeEvent) => Value
+): IZentUseField<Value, ChangeEvent> {
   let field: IUseField<Value>;
   if (props.name) {
     field = superUseField<Value>(
@@ -96,11 +106,11 @@ export function useField<Value, Event = Value>(
     field = superUseField<Value>(props.model as FieldModel<Value>);
   }
   const [childProps, model] = field;
-  const propsRef = useRef(props);
-  propsRef.current = props;
+  const propsRef = useRef<Partial<Props>>(props.props || {});
+  propsRef.current = props.props || {};
   const anchorRef = useRef<Element>();
   useScrollAnchor(model, anchorRef, props.scrollerRef);
-  const proxy = useMemo<IZentFormChildProps<Value, Event>>(
+  const proxy = useMemo<IZentFormChildProps<Value, ChangeEvent>>(
     () => ({
       value: childProps.value,
       onChange(e) {

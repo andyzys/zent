@@ -1,26 +1,29 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
 import { ICheckboxGroupProps, CheckboxGroup } from '../../checkbox';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormCheckboxGroupFieldProps<T>
-  extends Omit<ICheckboxGroupProps, 'value' | 'onChange'>,
-    IFormControlProps<T[]> {
+  extends IFormComponentCommonProps<
+    T[],
+    Omit<ICheckboxGroupProps, 'value' | 'onChange'>
+  > {
   children?: React.ReactNode;
 }
 
 export function FormCheckboxGroupField<T>(
   props: IFormCheckboxGroupFieldProps<T> & IFormFieldCommonProps<T[]>
 ) {
-  const [childProps, { error }, ref] = useField<T[], T[]>(
+  const [childProps, { error }, ref] = useField<T[], T[], ICheckboxGroupProps>(
     props,
     [],
     noopMapEventToValue
@@ -29,13 +32,12 @@ export function FormCheckboxGroupField<T>(
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
+    props: otherProps,
     children,
-    ...otherProps
   } = props;
   return (
     <FormControl
@@ -43,17 +45,15 @@ export function FormCheckboxGroupField<T>(
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <CheckboxGroup prefix={prefix} {...otherProps} {...childProps}>
+      <CheckboxGroup {...otherProps} {...childProps}>
         {children}
       </CheckboxGroup>
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
-      {defaultRenderError(error)}
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
+      {renderError(error)}
     </FormControl>
   );
 }

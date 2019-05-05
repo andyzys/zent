@@ -17,7 +17,6 @@ export interface IFormProps<T extends object = any>
   extends React.FormHTMLAttributes<HTMLFormElement> {
   type: 'horizontal' | 'vertical';
   form: ZentForm<T>;
-  prefix?: string;
   scrollerRef?: React.RefObject<HTMLElement>;
 }
 
@@ -72,7 +71,7 @@ export class ZentForm<T extends object> implements IForm {
       return false;
     }
     this.validate(
-      ValidateStrategy.IgnoreAsync | ValidateStrategy.IgnoreTouched
+      ValidateStrategy.IgnoreAsync | ValidateStrategy.IncludeUntouched
     );
     const isValid = this.isValid();
     if (isValid) {
@@ -119,7 +118,6 @@ export const Form: React.ForwardRefExoticComponent<
     {
       children,
       className,
-      prefix = 'zent',
       form,
       type = 'vertical',
       onSubmit = preventDefault,
@@ -136,10 +134,10 @@ export const Form: React.ForwardRefExoticComponent<
             ref={ref}
             {...props}
             className={cx(
-              `${prefix}-form`,
+              'zent-form',
               {
-                [`${prefix}-form-vertical`]: type === 'vertical',
-                [`${prefix}-form-horizontal`]: type === 'horizontal',
+                'zent-form-vertical': type === 'vertical',
+                'zent-form-horizontal': type === 'horizontal',
               },
               className
             )}

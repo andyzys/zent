@@ -2,35 +2,40 @@ import * as React from 'react';
 import { Omit } from 'utility-types';
 
 import NumberInput, { INumberInputProps } from '../../number-input';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormNumberInputFieldProps
-  extends Omit<INumberInputProps, 'onChange' | 'value' | 'name'>,
-    IFormControlProps<string> {}
+  extends IFormComponentCommonProps<
+    string,
+    Omit<INumberInputProps, 'onChange' | 'value' | 'name'>
+  > {}
 
 export const FormNumberInputField: React.FunctionComponent<
   IFormNumberInputFieldProps & IFormFieldCommonProps<string>
 > = props => {
-  const [childProps, { error }, ref] = useField(props, '', noopMapEventToValue);
+  const [childProps, { error }, ref] = useField<
+    string,
+    string,
+    INumberInputProps
+  >(props, '', noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    defaultValue,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -38,14 +43,12 @@ export const FormNumberInputField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <NumberInput prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <NumberInput {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

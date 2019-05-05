@@ -1,38 +1,40 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
 import ColorPicker, { IColorPickerProps } from '../../colorpicker';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormColorPickerFieldProps
-  extends Omit<IColorPickerProps, 'color' | 'onChange'>,
-    IFormControlProps<string> {}
+  extends IFormComponentCommonProps<
+    string,
+    Omit<IColorPickerProps, 'color' | 'onChange'>
+  > {}
 
 export const FormColorPickerField: React.FunctionComponent<
   IFormColorPickerFieldProps & IFormFieldCommonProps<string>
 > = props => {
-  const [{ value, ...passedProps }, { error }, ref] = useField<string>(
-    props,
-    '',
-    noopMapEventToValue
-  );
+  const [{ value, ...passedProps }, { error }, ref] = useField<
+    string,
+    string,
+    IColorPickerProps
+  >(props, '', noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -40,20 +42,12 @@ export const FormColorPickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
       required={required}
       invalid={!!error}
     >
-      <ColorPicker
-        prefix={prefix}
-        {...otherProps}
-        {...passedProps}
-        color={value}
-      />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <ColorPicker {...otherProps} {...passedProps} color={value} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

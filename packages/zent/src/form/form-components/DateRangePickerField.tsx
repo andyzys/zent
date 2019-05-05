@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import DateRangePicker, {
   IDateRangePickerProps,
@@ -15,8 +16,10 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormDateRangePickerFieldProps
-  extends Omit<IDateRangePickerProps, 'onChange' | 'value'>,
-    IFormControlProps<DatePickers.RangeValue> {}
+  extends IFormComponentCommonProps<
+    DatePickers.RangeValue,
+    Omit<IDateRangePickerProps, 'onChange' | 'value'>
+  > {}
 
 function dateDefaultValueFactory(): DatePickers.RangeValue {
   return [new Date(), new Date()];
@@ -25,21 +28,20 @@ function dateDefaultValueFactory(): DatePickers.RangeValue {
 export const FormDateRangePickerField: React.FunctionComponent<
   IFormDateRangePickerFieldProps & IFormFieldCommonProps<DatePickers.RangeValue>
 > = props => {
-  const [childProps, { error }, ref] = useField<DatePickers.RangeValue>(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.RangeValue,
+    DatePickers.RangeValue,
+    IDateRangePickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -47,14 +49,12 @@ export const FormDateRangePickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <DateRangePicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <DateRangePicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

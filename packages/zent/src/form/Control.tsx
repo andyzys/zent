@@ -3,29 +3,22 @@ import cx from 'classnames';
 
 import { Label } from './Label';
 
-export interface IFormControlProps<T> {
+export interface IFormControlProps {
   className?: string;
   style?: React.CSSProperties;
   label?: React.ReactNode;
-  prefix?: string;
   children?: React.ReactNode;
   required?: boolean;
   invalid?: boolean;
 }
 
-export const FormControl = React.forwardRef<
-  HTMLDivElement,
-  IFormControlProps<unknown>
->(
-  (
-    { className, style, label, prefix = 'zent', children, required, invalid },
-    ref
-  ) => {
+export const FormControl = React.forwardRef<HTMLDivElement, IFormControlProps>(
+  ({ className, style, label, children, required, invalid }, ref) => {
     return (
       <div
         ref={ref}
         className={cx(
-          `${prefix}-form-control`,
+          'zent-form-control',
           {
             'has-error': invalid,
           },
@@ -33,10 +26,8 @@ export const FormControl = React.forwardRef<
         )}
         style={style}
       >
-        <Label prefix={prefix} required={required}>
-          {label}
-        </Label>
-        <div className={cx(`${prefix}-form-control-content`)}>{children}</div>
+        <Label required={required}>{label}</Label>
+        <div className="zent-form-control-content">{children}</div>
       </div>
     );
   }

@@ -3,20 +3,23 @@ import { Omit } from 'utility-types';
 import DateRangeQuickPicker, {
   IDateRangeQuickPickerProps,
 } from '../../date-range-quick-picker';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormDateRangeQuickPickerFieldProps
-  extends Omit<IDateRangeQuickPickerProps, 'onChange' | 'value'>,
-    IFormControlProps<DatePickers.RangeValue> {}
+  extends IFormComponentCommonProps<
+    DatePickers.RangeValue,
+    Omit<IDateRangeQuickPickerProps, 'onChange' | 'value'>
+  > {}
 
 function dateDefaultValueFactory(): DatePickers.RangeValue {
   return [new Date(), new Date()];
@@ -26,21 +29,20 @@ export const FormDateRangeQuickPickerField: React.FunctionComponent<
   IFormDateRangeQuickPickerFieldProps &
     IFormFieldCommonProps<DatePickers.RangeValue>
 > = props => {
-  const [childProps, { error }, ref] = useField<DatePickers.RangeValue>(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.RangeValue,
+    DatePickers.RangeValue,
+    IDateRangeQuickPickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -48,14 +50,12 @@ export const FormDateRangeQuickPickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <DateRangeQuickPicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <DateRangeQuickPicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

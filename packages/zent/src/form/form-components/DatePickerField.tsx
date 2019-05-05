@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
 import DatePicker, { IDatePickerProps } from '../../datetimepicker/DatePicker';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
   IFormFieldCommonProps,
@@ -9,32 +9,34 @@ import {
   noopMapEventToValue,
   dateDefaultValueFactory,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormDatePickerField
-  extends Omit<IDatePickerProps, 'onChange' | 'value'>,
-    IFormControlProps<DatePickers.Value> {}
+  extends IFormComponentCommonProps<
+    DatePickers.Value,
+    Omit<IDatePickerProps, 'onChange' | 'value'>
+  > {}
 
 export const FormDatePickerField: React.FunctionComponent<
   IFormDatePickerField & IFormFieldCommonProps<DatePickers.Value>
 > = props => {
-  const [childProps, { error }, ref] = useField(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.Value,
+    DatePickers.Value,
+    IDatePickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -42,14 +44,12 @@ export const FormDatePickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <DatePicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <DatePicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

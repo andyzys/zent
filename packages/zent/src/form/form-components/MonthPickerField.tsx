@@ -3,7 +3,7 @@ import { Omit } from 'utility-types';
 import MonthPicker, {
   IMonthPickerProps,
 } from '../../datetimepicker/MonthPicker';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
   IFormFieldCommonProps,
@@ -11,32 +11,34 @@ import {
   noopMapEventToValue,
   dateDefaultValueFactory,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormMonthPickerFieldProps
-  extends Omit<IMonthPickerProps, 'value' | 'onChange'>,
-    IFormControlProps<DatePickers.Value> {}
+  extends IFormComponentCommonProps<
+    DatePickers.Value,
+    Omit<IMonthPickerProps, 'value' | 'onChange'>
+  > {}
 
 export const FormMonthPickerField: React.FunctionComponent<
   IFormMonthPickerFieldProps & IFormFieldCommonProps<DatePickers.Value>
 > = props => {
-  const [childProps, { error }, ref] = useField(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.Value,
+    DatePickers.Value,
+    IMonthPickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -44,14 +46,12 @@ export const FormMonthPickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <MonthPicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <MonthPicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

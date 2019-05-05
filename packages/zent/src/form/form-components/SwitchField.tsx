@@ -1,38 +1,40 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
 import Switch, { ISwitchProps } from '../../switch';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormSwitchFieldProps
-  extends Omit<ISwitchProps, 'onChange' | 'checked'>,
-    IFormControlProps<boolean> {}
+  extends IFormComponentCommonProps<
+    boolean,
+    Omit<ISwitchProps, 'onChange' | 'checked'>
+  > {}
 
 export const FormSwitchField: React.FunctionComponent<
   IFormSwitchFieldProps & IFormFieldCommonProps<boolean>
 > = props => {
-  const [{ value, ...childProps }, { error }, ref] = useField(
-    props,
-    false,
-    noopMapEventToValue
-  );
+  const [{ value, ...childProps }, { error }, ref] = useField<
+    boolean,
+    boolean,
+    ISwitchProps
+  >(props, false, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -40,15 +42,12 @@ export const FormSwitchField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
       required={required}
       invalid={!!error}
     >
-      <Switch prefix={prefix} {...otherProps} {...childProps} checked={value} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <Switch {...otherProps} {...childProps} checked={value} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

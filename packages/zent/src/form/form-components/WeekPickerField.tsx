@@ -1,34 +1,41 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   useField,
   IFormFieldCommonProps,
   noopMapEventToValue,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import WeekPicker, { IWeekPickerProps } from '../../datetimepicker/WeekPicker';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
+import { DatePickers } from '../../datetimepicker/common/types';
 
 export interface IFormWeekPickerFieldProps
-  extends Omit<IWeekPickerProps, 'value' | 'onChange'>,
-    IFormControlProps<[Date?, Date?]> {}
+  extends IFormComponentCommonProps<
+    DatePickers.RangeValue,
+    Omit<IWeekPickerProps, 'value' | 'onChange'>
+  > {}
 
 export const FormWeekPickerField: React.FunctionComponent<
-  IFormWeekPickerFieldProps & IFormFieldCommonProps<[Date?, Date?]>
+  IFormWeekPickerFieldProps & IFormFieldCommonProps<DatePickers.RangeValue>
 > = props => {
-  const [childProps, { error }, ref] = useField(props, [], noopMapEventToValue);
+  const [childProps, { error }, ref] = useField<
+    DatePickers.RangeValue,
+    DatePickers.RangeValue,
+    IWeekPickerProps
+  >(props, [], noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -36,14 +43,12 @@ export const FormWeekPickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <WeekPicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <WeekPicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

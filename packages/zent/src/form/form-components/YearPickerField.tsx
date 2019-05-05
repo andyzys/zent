@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import {
   IFormFieldCommonProps,
   useField,
   noopMapEventToValue,
   dateDefaultValueFactory,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import YearPicker, { IYearPickerProps } from '../../datetimepicker/YearPicker';
 import { DatePickers } from '../../datetimepicker/common/types';
@@ -14,27 +15,28 @@ import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormYearPickerFieldProps
-  extends Omit<IYearPickerProps, 'value' | 'onChange'>,
-    IFormControlProps<DatePickers.Value> {}
+  extends IFormComponentCommonProps<
+    DatePickers.Value,
+    Omit<IYearPickerProps, 'value' | 'onChange'>
+  > {}
 
 export const FormYearPickerField: React.FunctionComponent<
   IFormYearPickerFieldProps & IFormFieldCommonProps<DatePickers.Value>
 > = props => {
-  const [childProps, { error }, ref] = useField(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.Value,
+    DatePickers.Value,
+    IYearPickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -42,14 +44,12 @@ export const FormYearPickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <YearPicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <YearPicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

@@ -2,36 +2,43 @@ import * as React from 'react';
 import cx from 'classnames';
 import { Omit } from 'utility-types';
 import Checkbox, { ICheckboxProps, ICheckboxEvent } from '../../checkbox';
-import { FormControl, IFormControlProps } from '../Control';
-import { useField, IFormFieldCommonProps, defaultRenderError } from '../shared';
+import { FormControl } from '../Control';
+import {
+  useField,
+  defaultRenderError,
+  IFormComponentCommonProps,
+  IFormFieldModelProps,
+} from '../shared';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormCheckboxFieldProps
-  extends Omit<ICheckboxProps, 'onChange' | 'checked'>,
-    IFormControlProps<boolean> {}
+  extends IFormComponentCommonProps<
+    boolean,
+    Omit<ICheckboxProps, 'onChange' | 'checked'>
+  > {}
 
-function mapCheckboxEventToValue(e: ICheckboxEvent) {
+function mapCheckboxEventToValue(e: ICheckboxEvent): boolean {
   return e.target.checked;
 }
 
 export const FormCheckboxField = (
-  props: IFormCheckboxFieldProps & IFormFieldCommonProps<boolean>
+  props: IFormCheckboxFieldProps & IFormFieldModelProps<boolean>
 ) => {
-  const [{ value, ...passedProps }, { error }, ref] = useField<
-    boolean,
-    ICheckboxEvent
-  >(props, false, mapCheckboxEventToValue);
+  const [{ value, ...passedProps }, { error }, ref] = useField(
+    props,
+    false,
+    mapCheckboxEventToValue
+  );
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -39,19 +46,12 @@ export const FormCheckboxField = (
       className={cx(className)}
       style={style}
       label={label}
-      prefix={prefix}
       invalid={!!error}
+      required={required}
     >
-      <Checkbox
-        prefix={prefix}
-        {...otherProps}
-        {...passedProps}
-        checked={value}
-      />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <Checkbox {...otherProps} {...passedProps} checked={value} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );

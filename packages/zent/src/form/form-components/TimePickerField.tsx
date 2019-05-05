@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Omit } from 'utility-types';
-import { IFormControlProps, FormControl } from '../Control';
+import { FormControl } from '../Control';
 import { DatePickers } from '../../datetimepicker/common/types';
 import {
   IFormFieldCommonProps,
@@ -8,33 +8,35 @@ import {
   noopMapEventToValue,
   dateDefaultValueFactory,
   defaultRenderError,
+  IFormComponentCommonProps,
 } from '../shared';
 import TimePicker, { ITimePickerProps } from '../../datetimepicker/TimePicker';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
 
 export interface IFormTimePickerField
-  extends Omit<ITimePickerProps, 'onChange' | 'value'>,
-    IFormControlProps<DatePickers.Value> {}
+  extends IFormComponentCommonProps<
+    DatePickers.Value,
+    Omit<ITimePickerProps, 'onChange' | 'value'>
+  > {}
 
 export const FormTimePickerField: React.FunctionComponent<
   IFormTimePickerField & IFormFieldCommonProps<DatePickers.Value>
 > = props => {
-  const [childProps, { error }, ref] = useField(
-    props,
-    dateDefaultValueFactory,
-    noopMapEventToValue
-  );
+  const [childProps, { error }, ref] = useField<
+    DatePickers.Value,
+    DatePickers.Value,
+    ITimePickerProps
+  >(props, dateDefaultValueFactory, noopMapEventToValue);
   const {
     className,
     style,
     label,
-    prefix,
     renderError = defaultRenderError,
     required,
-    description,
+    helpDesc,
     notice,
-    ...otherProps
+    props: otherProps,
   } = props;
   return (
     <FormControl
@@ -42,14 +44,12 @@ export const FormTimePickerField: React.FunctionComponent<
       className={className}
       style={style}
       label={label}
-      prefix={prefix}
+      required={required}
       invalid={!!error}
     >
-      <TimePicker prefix={prefix} {...otherProps} {...childProps} />
-      {!!notice && <FormNotice prefix={prefix}>{notice}</FormNotice>}
-      {!!description && (
-        <FormDescription prefix={prefix}>{description}</FormDescription>
-      )}
+      <TimePicker {...otherProps} {...childProps} />
+      {!!notice && <FormNotice>{notice}</FormNotice>}
+      {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
     </FormControl>
   );
