@@ -28,7 +28,6 @@ export default class Points extends PureComponent<any, any> {
   };
 
   isLeftButton = e => {
-    e = e || window.event;
     const btnCode = e.button;
     return btnCode === 0;
   };
