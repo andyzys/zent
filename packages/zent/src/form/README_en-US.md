@@ -54,14 +54,7 @@ Note: The name of the `format` prop in date related picker components is changed
 
 <!-- demo-slot-1 -->
 <!-- demo-slot-2 -->
-
-#### Package multiple elements
-
-When a `Field` needs to contains multiple elements, it is recommended to assemble the values of multiple elements into one object and passed it to the `Field` component. When using `getControlGroup` is not possible to satisfy your package requirements, you can wrap the component yourself and change the value of the field by calling the `onChange` function passed in by the `Field` component.
-
-⚠️Ps：Calling the `onChange` function passed in by `Field` will override the original value. You can pass the second parameter as `{merge: true}` to `onChange` function, which will partially override the original value.
-
-<!-- demo-slot-4 -->
+<!-- demo-slot-3 -->
 
 ### The validations of form
 
@@ -74,28 +67,14 @@ When a `Field` needs to contains multiple elements, it is recommended to assembl
 
 Custom form validation function:
 
-`function validate(formValues, fieldValue): string | boolean`
+```ts
+function validate<T>(value: T, ctx: ValidatorContext): IMaybeError<T> | Promise<IMaybeError<T>> | Observable<IMaybeError<T>>;
+```
 
 - If validate returns `boolean`, `true` means validation is passed; `false` means validation is failed, in this case it must be used together with a corresponding key in `validationErrors`.
 - Or the validate function may return a `string` directly, in this case, `validationErrors` is not used.
 
-<!-- demo-slot-5 -->
-
-#### Different timing when the validations are triggered
-
-The default timing of validations is when the value of field changes. You can change the timing when the validation is triggered by specifing `validateOnChange`, `validateOnBlur`. For example, the field will trigger the validation in blur when set `validateOnChange` to be `false` and `validateOnBlur` to be `true`. Notice that these property are typically for input fields.
-
-If you want to validate the form when submitting, yoy should set `validateOnChange` and `validateOnBlur` to be `false` and the built-in `handleSubmit` method to submit the form。If you don't want to use `handleSubmit`, you should use `zentForm.validateForm(true, callback)` to tigger the validations of form by yourself and deal with the submitting logic in `callback`. If you want to determine the show logic of error messages, you can set the property `displayError` of the field.
-
-<!-- demo-slot-6 -->
-
-#### Asynchronous validations
-
-Asynchronous validations is usually triggered on blur. If you need to manually trigger asynchronous validations in a custom component, you need to call `props.onBlur (event)` yourself.  `value` can be passed to the function directly as the `event` parameter or an attribute of `event`.
-
-If you submit a form without operating the fields that have asynchronous validations, these asynchronous validations will not be triggered by default. Using the built-in `handleSubmit` method for submitting will help to trigger the asynchronous verifications which have never been triggered. If you don't want to use `handleSubmit` method, you should use the `zentForm.isFormAsyncValidated` method to judge wheather the form has been asynchronous validated. Depending on the result, you should choose whether to use the `zentForm.asyncValidateForm (resolve, reject)` method to force the asynchronous validations of the form.
-
-<!-- demo-slot-7 -->
+<!-- demo-slot-4 -->
 
 ### Others
 
@@ -103,25 +82,11 @@ If you submit a form without operating the fields that have asynchronous validat
 
 `Form` provides three kind of layouts: `inline`，`horizontal`， `vertical`.
 
-<!-- demo-slot-11 -->
+<!-- demo-slot-5 -->
 
-#### `Fieldset`
+#### `Field Array`
 
-<!-- demo-slot-12 -->
-
-#### `FormSection`
-
-When there are several similar sections of fields in your form, you can use `FormSection` to reuse these fields. With `FormSection`, the values of form is a nested object. See more details in [`Form.FormSection` API](#form-formsection)。
-
-<!-- demo-slot-13 -->
-
-#### `FieldArray`
-
-`FieldArray` helps to render an array of identical fields. You can add and delete the cell fields in the array, similary to the addition and deletion of elements in an array.
-
-`FieldArray` injects the `fields` property for its `component`, which provides the traversal, addition, deletion and other operations of cell fields. See more details in [`Form.FieldArray` API](#form-fieldarray)。
-
-<!-- demo-slot-14 -->
+<!-- demo-slot-6 -->
 
 ### The internal realization of form
 

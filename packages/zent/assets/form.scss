@@ -94,5 +94,12 @@
         margin-left: 10px;
       }
     }
+
+    #{$p}__form-actions {
+      padding: 0 0 0 130px;
+      margin: 25px 0 10px;
+      background: none;
+      border: 0;
+    }
   }
 }

@@ -53,8 +53,7 @@ scatter: true
 
 <!-- demo-slot-1 -->
 <!-- demo-slot-2 -->
-
-<!-- demo-slot-4 -->
+<!-- demo-slot-3 -->
 
 ### 表单校验
 
@@ -71,7 +70,7 @@ function validate<T>(value: T, ctx: ValidatorContext): IMaybeError<T> | Promise<
 - 如果返回 `null` 表示校验通过，当校验失败时返回一个包含错误信息的对象。
 - 支持返回`Promise`或`Observable`进行异步校验
 
-<!-- demo-slot-5 -->
+<!-- demo-slot-4 -->
 
 ### 其他
 
@@ -79,11 +78,11 @@ function validate<T>(value: T, ctx: ValidatorContext): IMaybeError<T> | Promise<
 
 `Form` 组件使用`flex`布局，提供两种简单的样式：水平布局 `horizontal`， 垂直布局 `vertical`。
 
-<!-- demo-slot-11 -->
+<!-- demo-slot-5 -->
 
 #### `Field Array`
 
-<!-- demo-slot-14 -->
+<!-- demo-slot-6 -->
 
 ### API
 
