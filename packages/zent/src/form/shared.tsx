@@ -60,6 +60,7 @@ export interface IFormFieldSharedProps<Value, Props> {
   name: string;
   model: FieldModel<Value>;
   scrollerRef?: RefObject<HTMLElement>;
+  validators?: Array<IValidator<Value>>;
 }
 
 export type IZentUseField<Value, Event> = [
@@ -100,7 +101,8 @@ export function useField<
   if (props.name) {
     field = superUseField<Value>(
       props.name,
-      mapDefaultValue(props, defaultDefaultValue)
+      mapDefaultValue(props, defaultDefaultValue),
+      props.validators
     );
   } else {
     field = superUseField<Value>(props.model as FieldModel<Value>);

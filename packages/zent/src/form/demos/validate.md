@@ -1,7 +1,7 @@
 ---
 order: 5
 zh-CN:
-	title: 常用表单校验
+	title: 表单校验
 	name: 昵称
 	namedescription: 正则校验
 	nameValidationError1: 请填写昵称
@@ -10,7 +10,7 @@ zh-CN:
 	pwdescription: 非空校验
 	pwValidationError: 请填写密码
 	comfirmPw: 确认密码
-	comfirmPwdescription: 与其他表单域对比校验
+	comfirmPwdescription: 自定义校验函数
 	comfirmValidatiaonError: 两次填写的密码不一致
 	email: 邮件
 	emailHelodesc: 邮件校验
@@ -63,9 +63,40 @@ en-US:
 ---
 
 ```jsx
-import { Form, FormStrategy, Radio, Checkbox, Notify, Validators } from 'zent';
+import {
+	Form,
+	FormStrategy,
+	Radio,
+	Checkbox,
+	Notify,
+	Validators,
+	FormNumberInputField,
+	FormInputField,
+} from 'zent';
 // import { Form, Radio, Checkbox, Notify } from 'zent';
 // const { Field, FormInputField, FormCheckboxGroupField, createForm } = Form;
+
+/**
+ * 自定义表单校验，内置组件接受 renderError 参数，若不传默认会显示 message
+ */
+function equalsPassword(value, ctx) {
+	if (value !== ctx.getSectionValue('password').password) {
+		return {
+			name: 'passwordEqual',
+			message: '{i18n.comfirmValidatiaonError}',
+		};
+	}
+	return null;
+}
+
+function idLength(value) {
+	if (value.length !== 10 && value.length !== 15) {
+		return {
+			name: 'idLength',
+			message: '{i18n.idValidationError2}',
+		};
+	}
+}
 
 function App() {
 	const form = Form.useForm(FormStrategy.View);
@@ -76,94 +107,53 @@ function App() {
 		<Form form={form} type="horizontal">
 			<FormInputField
 				name="name"
-				type="text"
 				label="{i18n.name}:"
 				required
-				description="{i18n.namedescription}"
+				helpDesc="{i18n.namedescription}"
 				validators={[
 					Validators.required('{i18n.nameValidationError1}'),
-					Validators.pattern(/^[a-zA-Z]+$/, '{i18n.nameValidationError2}')
+					Validators.pattern(/^[a-zA-Z]+$/, '{i18n.nameValidationError2}'),
 				]}
 			/>
 			<FormInputField
 				name="password"
-				type="text"
 				label="{i18n.password}:"
 				required
-				description="{i18n.pwdescription}"
-				// validations={{
-				// 	required: true,
-				// }}
-				// validationErrors={{
-				// 	required: '{i18n.pwValidationError}',
-				// }}
+				helpDesc="{i18n.pwdescription}"
+				validators={[Validators.required('{i18n.pwValidationError}')]}
+				props={{
+					type: 'password',
+				}}
 			/>
 			<FormInputField
 				name="confirmPw"
-				type="text"
 				label="{i18n.comfirmPw}:"
 				required
-				description="{i18n.comfirmPwdescription}"
-				// validations={{
-				// 	equalsField: 'password',
-				// }}
-				// validationErrors={{
-				// 	equalsField: '{i18n.comfirmValidatiaonError}',
-				// }}
+				helpDesc="{i18n.comfirmPwdescription}"
+				validators={[equalsPassword]}
+				props={{
+					type: 'password',
+				}}
 			/>
 			<FormInputField
 				name="email"
-				type="text"
 				label="{i18n.email}:"
-				description="{i18n.emailHelodesc}"
-				// validations={{
-				// 	isEmail: true,
-				// }}
-				// validationErrors={{
-				// 	isEmail: '{i18n.emailValidationError}',
-				// }}
+				helpDesc="{i18n.emailHelodesc}"
+				validators={[Validators.email('{i18n.emailValidationError}')]}
 			/>
-			<FormInputField
-				name="url"
-				type="text"
-				label="{i18n.url}:"
-				description="{i18n.urldescription}"
-				// validations={{
-				// 	isUrl: true,
-				// }}
-				// validationErrors={{
-				// 	isUrl: '{i18n.urlValidationError}',
-				// }}
-			/>
-			<FormInputField
+			<FormNumberInputField
 				name="id"
-				type="text"
 				label="{i18n.id}:"
 				required
-				description="{i18n.iddescription}"
-				// validations={{
-				// 	matchRegex: /^\d+$/,
-				// 	format(values, value) {
-				// 		return value.length === 15 || value.length === 10;
-				// 	},
-				// }}
-				// validationErrors={{
-				// 	matchRegex: '{i18n.idValidationError1}',
-				// 	format: '{i18n.idValidationError2}',
-				// }}
+				helpDesc="{i18n.iddescription}"
+				validators={[idLength]}
 			/>
 			<FormCheckboxGroupField
 				name="hobbies"
-				type="text"
 				label="{i18n.hobbies}:"
 				required
-				description="{i18n.hobbiesdescription}"
-				// validations={{
-				// 	minLength: 2,
-				// }}
-				// validationErrors={{
-				// 	minLength: '{i18n.hobbiesValidationError}',
-				// }}
+				helpDesc="{i18n.hobbiesdescription}"
+				validators={[Validators.minLength(2, '{i18n.hobbiesValidationError}')]}
 			>
 				<Checkbox value="movie">{i18n.hobbiesText1}</Checkbox>
 				<Checkbox value="book">{i18n.hobbiesText2}</Checkbox>
@@ -180,140 +170,6 @@ function App() {
 		</Form>
 	);
 }
-
-// class FieldForm extends React.Component {
-// 	state = {
-// 		checkedList: []
-// 	}
-
-// 	onCheckboxChange = (checkedList) => {
-// 		this.setState({ checkedList });
-// 	}
-
-// 	submit = (values, zentForm) => {
-// 		Notify.success(JSON.stringify(values));
-// 	};
-
-// 	resetForm = () => {
-// 		this.props.zentForm.resetFieldsValue();
-// 	}
-
-// 	render() {
-// 		const { handleSubmit } =this.props;
-
-// 		return (
-// 			<Form horizontal onSubmit={handleSubmit(this.submit)}>
-// 				<FormInputField
-// 					name="name"
-// 					type="text"
-// 					label="{i18n.name}:"
-// 					required
-// 					description="{i18n.namedescription}"
-// 					validations={{
-// 						required: true,
-// 						matchRegex: /^[a-zA-Z]+$/
-// 					}}
-// 					validationErrors={{
-// 						required: '{i18n.nameValidationError1}',
-// 						matchRegex: '{i18n.nameValidationError2}'
-// 					}}
-// 				/>
-// 				<FormInputField
-// 					name="password"
-// 					type="text"
-// 					label="{i18n.password}:"
-// 					required
-// 					description="{i18n.pwdescription}"
-// 					validations={{
-// 						required: true
-// 					}}
-// 					validationErrors={{
-// 						required: '{i18n.pwValidationError}'
-// 					}}
-// 				/>
-// 				<FormInputField
-// 					name="confirmPw"
-// 					type="text"
-// 					label="{i18n.comfirmPw}:"
-// 					required
-// 					description="{i18n.comfirmPwdescription}"
-// 					validations={{
-// 						equalsField: 'password'
-// 					}}
-// 					validationErrors={{
-// 						equalsField: '{i18n.comfirmValidatiaonError}'
-// 					}}
-// 				/>
-// 				<FormInputField
-// 					name="email"
-// 					type="text"
-// 					label="{i18n.email}:"
-// 					description="{i18n.emailHelodesc}"
-// 					validations={{
-// 						isEmail: true
-// 					}}
-// 					validationErrors={{
-// 						isEmail: '{i18n.emailValidationError}'
-// 					}}
-// 				/>
-// 				<FormInputField
-// 					name="url"
-// 					type="text"
-// 					label="{i18n.url}:"
-// 					description="{i18n.urldescription}"
-// 					validations={{
-// 						isUrl: true
-// 					}}
-// 					validationErrors={{
-// 						isUrl: '{i18n.urlValidationError}'
-// 					}}
-// 				/>
-// 				<FormInputField
-// 					name="id"
-// 					type="text"
-// 					label="{i18n.id}:"
-// 					required
-// 					description="{i18n.iddescription}"
-// 					validations={{
-// 						matchRegex: /^\d+$/,
-// 						format(values, value) {
-// 							return value.length === 15 || value.length === 10
-// 						}
-// 					}}
-// 					validationErrors={{
-// 						matchRegex: '{i18n.idValidationError1}',
-// 						format: '{i18n.idValidationError2}'
-// 					}}
-// 				/>
-// 				<FormCheckboxGroupField
-// 					name="hobbies"
-// 					type="text"
-// 					label="{i18n.hobbies}:"
-// 					value={this.state.checkedList}
-// 					onChange={this.onCheckboxChange}
-// 					required
-// 					description="{i18n.hobbiesdescription}"
-// 					validations={{
-// 						minLength: 2
-// 					}}
-// 					validationErrors={{
-// 						minLength: '{i18n.hobbiesValidationError}'
-// 					}}
-// 				>
-// 					<Checkbox value="movie">{i18n.hobbiesText1}</Checkbox>
-// 					<Checkbox value="book">{i18n.hobbiesText2}</Checkbox>
-// 					<Checkbox value="travel">{i18n.hobbiesText3}</Checkbox>
-// 				</FormCheckboxGroupField>
-// 				<div className="zent-form__form-actions">
-// 					<Button type="primary" htmlType="submit">{i18n.submit}</Button>
-// 					<Button type="primary" outline onClick={this.resetForm}>{i18n.reset}</Button>
-// 				</div>
-// 			</Form>
-// 		);
-// 	}
-// }
-
-// const WrappedForm = createForm()(FieldForm);
 
 ReactDOM.render(<App />, mountNode);
 ```
