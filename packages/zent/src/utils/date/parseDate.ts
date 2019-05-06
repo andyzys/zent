@@ -1,4 +1,4 @@
-import fecha from 'fecha';
+import * as fecha from 'fecha';
 
 import { zhCN } from '../../i18n/time-locale';
 
@@ -34,7 +34,7 @@ export default function parseDate(
 
   mask = mask || 'default';
 
-  const ret = fecha.parse(date, mask, locale);
+  const ret = (fecha as any).parse(date, mask, locale);
 
   if (!ret) {
     return null;
