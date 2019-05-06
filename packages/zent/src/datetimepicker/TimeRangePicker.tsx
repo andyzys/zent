@@ -9,6 +9,7 @@ import cx from 'classnames';
 import isString from 'lodash-es/isString';
 import isDate from 'lodash-es/isDate';
 import isArray from 'lodash-es/isArray';
+import { Omit } from 'utility-types';
 
 import { I18nReceiver as Receiver } from '../i18n';
 
@@ -27,7 +28,11 @@ function compatibleInterface(prop) {
 }
 
 export interface ITimeRangePickerProps
-  extends DatePickers.ICommonProps<[DatePickers.Value, DatePickers.Value]> {
+  extends Omit<
+    DatePickers.ICommonProps<DatePickers.RangeValue>,
+    'placeholder'
+  > {
+  placeholder: [string?, string?];
   isFooterVisble?: boolean;
   showSecond?: boolean;
   hourStep?: number;
