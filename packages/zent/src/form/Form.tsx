@@ -10,6 +10,10 @@ import {
   useField,
   useFieldArray,
   useFieldSet,
+  field,
+  set,
+  array,
+  form,
 } from 'formulr';
 import { IZentFormContext, FormContext } from './context';
 
@@ -91,7 +95,7 @@ export class ZentForm<T extends object> implements IForm {
 }
 
 export function useForm<T extends object = any>(
-  arg: FormStrategy.View | FormModel<T>
+  arg: FormStrategy.View | (() => FormModel<T>)
 ) {
   const inner = superUseForm(arg);
   const zentFormContext = React.useMemo<IZentFormContext>(
@@ -108,6 +112,10 @@ export interface IFormApi {
   useField: typeof useField;
   useFieldArray: typeof useFieldArray;
   useFieldSet: typeof useFieldSet;
+  field: typeof field;
+  set: typeof set;
+  array: typeof array;
+  form: typeof form;
 }
 
 export const Form: React.ForwardRefExoticComponent<
@@ -156,3 +164,7 @@ Form.useField = useField;
 Form.useFieldArray = useFieldArray;
 Form.useFieldSet = useFieldSet;
 Form.displayName = 'ZentForm';
+Form.field = field;
+Form.set = set;
+Form.array = array;
+Form.form = form;

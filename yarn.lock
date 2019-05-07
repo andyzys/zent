@@ -4971,10 +4971,10 @@ format@^0.2.2:
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
   integrity sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=
 
-formulr@0.2.0-beta.14:
-  version "0.2.0-beta.14"
-  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.14.tgz#803a314edd5363ced64d33c50ab84075bcdc9a82"
-  integrity sha512-n95s973LhK2v++aq7pRQwYaNGuMAXCPq6pGmJteKQaktIGMetlqTTui/Zu9WWkpB+MTkoy/0mbT+7tK92APtdg==
+formulr@0.2.0-beta.17:
+  version "0.2.0-beta.17"
+  resolved "https://registry.yarnpkg.com/formulr/-/formulr-0.2.0-beta.17.tgz#7b04006072dac3502dcbc270e835c1edf875f6d6"
+  integrity sha512-6By4QJ23fuAtNyLKpeIRzekYeAThADELOv+r3v+PY7C3pUAlK5Uz4fRfsIAMEfyK74hxOQTiZn3Pc2KHLZlvpQ==
   dependencies:
     "@types/big.js" "^4.0.5"
     "@types/react" "^16.8.0"
