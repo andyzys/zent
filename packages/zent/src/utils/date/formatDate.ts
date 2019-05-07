@@ -1,4 +1,4 @@
-import * as fecha from 'fecha';
+import fecha from 'fecha';
 
 import { zhCN } from '../../i18n/time-locale';
 import { getValidDate } from './helpers';
@@ -30,5 +30,5 @@ export default function formatDate(
   /**
    * TODO: remove as any after fecha fixes its d.ts
    */
-  return (fecha as any).format(date, mask, locale);
+  return fecha.format(date, mask, locale);
 }

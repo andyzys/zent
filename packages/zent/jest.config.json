@@ -8,12 +8,6 @@
       "^.+\\.jsx?$": "babel-jest"
     }
   },
-  "moduleFileExtensions": [
-    "tsx",
-    "ts",
-    "js",
-    "json"
-  ],
   "transformIgnorePatterns": ["/node_modules/(?!(lodash-es|fecha)/)"],
   "testURL": "https://youzan.github.io/zent",
   "verbose": true,
@@ -65,5 +59,8 @@
   "moduleDirectories": [
     "node_modules",
     "src"
-  ]
+  ],
+  "moduleNameMapper": {
+    "fecha": "fecha/src/fecha.js"
+  }
 }
