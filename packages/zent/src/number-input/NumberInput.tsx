@@ -96,6 +96,7 @@ export class NumberInput extends React.Component<
     decimal: 0,
     disabled: false,
     onChange: () => {},
+    size: 'normal',
   };
 
   constructor(props: INumberInputProps) {

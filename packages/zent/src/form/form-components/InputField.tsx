@@ -4,7 +4,7 @@ import { Omit } from 'utility-types';
 import { FormControl } from '../Control';
 import { FormDescription } from '../Description';
 import { FormNotice } from '../Notice';
-import Input, { IInputProps, IInputChangeEvent } from '../../input';
+import Input, { IInputProps, IInputClearEvent } from '../../input';
 import {
   useField,
   IFormFieldModelProps,
@@ -19,7 +19,7 @@ export interface IFormInputFieldProps
   > {}
 
 function mapInputEventToValue(
-  e: IInputChangeEvent | React.ChangeEvent<HTMLInputElement>
+  e: IInputClearEvent | React.ChangeEvent<HTMLInputElement>
 ): string {
   return e.target.value || '';
 }
@@ -51,7 +51,7 @@ export const FormInputField: React.FunctionComponent<
       required={required}
       invalid={!!error}
     >
-      <Input {...otherProps} {...childProps} />
+      <Input {...otherProps as any} {...childProps} />
       {!!notice && <FormNotice>{notice}</FormNotice>}
       {!!helpDesc && <FormDescription>{helpDesc}</FormDescription>}
       {renderError(error)}
